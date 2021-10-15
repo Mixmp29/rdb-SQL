@@ -1,6 +1,3 @@
-#ifndef SUM_H
-#define SUM_H
+#pragma once 
 
 double sum(double a, double b);
-
-#endif
