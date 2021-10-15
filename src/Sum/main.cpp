@@ -1,6 +1,7 @@
 #include <cxxopts.hpp>
-#include <iostream>
 #include <sum.hpp>
+
+#include <iostream>
 
 int main(int argc, char** argv) {
   cxxopts::Options options("sum");
