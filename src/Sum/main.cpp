@@ -1,5 +1,6 @@
-#include <cxxopts.hpp>
 #include <sum.hpp>
+
+#include <cxxopts.hpp>
 
 #include <iostream>
 

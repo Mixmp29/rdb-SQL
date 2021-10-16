@@ -1,5 +1,6 @@
-#include <gtest/gtest.h>
 #include <sum.hpp>
+
+#include <gtest/gtest.h>
 
 #include <iostream>
 
