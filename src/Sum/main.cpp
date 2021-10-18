@@ -1,4 +1,4 @@
-#include <sum.hpp>
+#include <LibSum/sum.hpp>
 
 #include <cxxopts.hpp>
 
