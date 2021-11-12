@@ -101,4 +101,15 @@ InsertStatementPtr Parser::parse_inset_statement() {
          table_name.text(), column_names, values);
 }
 
+Value Parser::parse_value() {
+  const Token token = lexer_.peek();
+    if (token.kind() == Token::Kind::Int){
+      return std::variant<int, std::string_view>(token.text()); 
+    }
+    if (token.kind() == Token::Kind::Str){
+      return std::variant<int, std::string_view>(token.text()); 
+    }
+    throw SyntaxError("Expected Int or Real or String");
+}
+
 }
