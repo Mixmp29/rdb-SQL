@@ -7,8 +7,6 @@
 
 namespace rdb::sql {
 
-// TODO(1): Классы DropStatement, InsertStatement и указатели.
-
 class Statement {
  public:
   virtual ~Statement() = 0;
@@ -55,4 +53,4 @@ class InsertStatement: public Statement {
 
 using InsertStatementPtr = std::unique_ptr<const InsertStatement>;
 
-}  // namespace rdb::sql
+}
