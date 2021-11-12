@@ -5,6 +5,10 @@
 
 namespace rdb::sql {
 
+  class SyntaxError : public std::runtime_error {
+    public:
+    using std::runtime_error::runtime_error;
+  };
 
 Parser::Result Parser::parse_sql_script() {
   Parser::Result result;
