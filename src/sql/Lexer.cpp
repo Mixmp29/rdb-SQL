@@ -7,7 +7,6 @@
 namespace rdb::sql {
 
 Token Lexer::get() {
-  // TODO(3.1): Распознавание идентификаторов.
   if (next_token_.has_value()) {
     const Token token(next_token_.value());
     next_token_.reset();
@@ -47,14 +46,6 @@ Token Lexer::get() {
     return Token(Token::Kind::Comma, ",", begin);
   } 
 
-  // TODO(5.1): Распознавание ключевых слов.
-  // Ключевые слова грамматически не отличаются от идентификаторов.
-  // Для простоты реализации предлагается доработать метод распознавания
-  // идентификаторов.
-  // После прочитывания идентификатора необходимо сформировать текст и
-  // проверить, является ли этот текст ключевым словом. Таким образом, мы
-  // уточним тип токена и сможем сформировать идентификатор или ключевое слово.
-
   if ((isdigit(peek_char()) != 0) || (peek_char() == '-') || (peek_char() == '+')){
     return get_number();
   }
@@ -66,17 +57,7 @@ Token Lexer::get() {
   if (peek_char() == '\"'){
     return get_string();
   }
-
-  // TODO(6.1): Распознавание чисел.
-  // - Числа начинаются с опционального знака + или -
-  // - Число может быть нулем или начинаться с цифры [1-9]
-  // - Если первая цифра была не 0, то далее могут следовать произвольные цифры
-  // Грамматика:
-  // signed_number = (-|+)? number
-  // number = 0 | [1-9][0-9]*
   
-
-
   Location begin(location_);
   get_char();
   return Token(Token::Kind::Unknown, input_.substr(begin.offset_, 1), begin);
@@ -228,4 +209,4 @@ Token Lexer::get_string(){
   return Token(kind, text, begin);
 }
 
-}   // namespace rdb::sql
+}
