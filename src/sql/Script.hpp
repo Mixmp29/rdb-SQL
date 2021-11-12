@@ -10,4 +10,4 @@ struct Script {
   std::vector<StatementPtr> statements_;
 };
 
-}  // namespace rdb::sql
+}
