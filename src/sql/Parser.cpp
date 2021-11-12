@@ -64,5 +64,41 @@ DropTableStatementPtr Parser::parse_drop_table_statement() {
   return std::make_unique<const DropTableStatement>(table_name.text());
 }
 
+InsertStatementPtr Parser::parse_inset_statement() {
+  fetch_token(Token::Kind::KwInsert);
+  fetch_token(Token::Kind::KwInto);
+  const Token table_name = fetch_token(Token::Kind::Id);
+
+  fetch_token(Token::Kind::LParen);
+
+  std::vector<std::string_view> column_names;
+  const Token first_column_name = fetch_token(Token::Kind::Id);
+  column_names.push_back(first_column_name.text());
+
+  while(lexer_.peek().kind() == Token::Kind::Comma){
+    fetch_token(Token::Kind::Comma);
+    const Token next_column_name = fetch_token(Token::Kind::Id);
+    column_names.push_back(next_column_name.text());
+  }
+
+  fetch_token(Token::Kind::RParen);
+  fetch_token(Token::Kind::KwValues);
+  fetch_token(Token::Kind::LParen);
+
+  std::vector<Value> values;
+  const Value first_value = parse_value();
+  values.push_back(first_value);
+
+  while (lexer_.peek().kind() == Token::Kind::Comma) {
+    fetch_token(Token::Kind::Comma);
+    const Value next_value = parse_value();
+    values.push_back(next_value);
+  }
+
+  fetch_token(Token::Kind::RParen);
+  fetch_token(Token::Kind::Semi);
+  return std::make_unique<const  InsertStatement>(
+         table_name.text(), column_names, values);
+}
 
 }
