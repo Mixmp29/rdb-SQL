@@ -1,5 +1,6 @@
 #include <sql/Parser.hpp>
 
+#include <cassert>
 #include <charconv>
 #include <sstream>
 
@@ -102,14 +103,30 @@ InsertStatementPtr Parser::parse_inset_statement() {
 }
 
 Value Parser::parse_value() {
+  char* end = nullptr;
+  Value result;
   const Token token = lexer_.peek();
     if (token.kind() == Token::Kind::Int){
-      return std::variant<int, std::string_view>(token.text()); 
-    }
-    if (token.kind() == Token::Kind::Str){
-      return std::variant<int, std::string_view>(token.text()); 
+      result = Value(std::strtol(token.text().data(), &end, 10));
+      if (token.text().data() + token.text().size() != end){
+        throw SyntaxError("Invalid symbols at\n" 
+        + std::string(end - token.text().data(), ' ')
+        + '^' + std::string(token.text().end() - end - 1, '~') + '\n');    
+      }
+    } else if (token.kind() == Token::Kind::Real){
+
+      result = Value(std::strtof(token.text().data(), &end));
+      if (token.text().data() + token.text().size() != end){
+        throw SyntaxError("Invalid symbols at\n" 
+        + std::string(end - token.text().data(), ' ')
+        + '^' + std::string(token.text().end() - end - 1, '~') + '\n');    
+      }
+
+    } else {
+      assert(token.kind() == Token::Kind::Str);
+      return token.text(); 
     }
     throw SyntaxError("Expected Int or Real or String");
 }
 
-}
+} // namespace rdb::sql

@@ -30,4 +30,4 @@ class Parser {
   Lexer& lexer_;
 };
 
-}
+} // namespace rdb::sql
