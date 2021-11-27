@@ -7,7 +7,7 @@
 namespace rdb::sql {
 
 struct Script {
-  std::vector<StatementPtr> statements_;
+    std::vector<StatementPtr> statements_;
 };
 
-}
+} // namespace rdb::sql

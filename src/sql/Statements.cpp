@@ -4,4 +4,4 @@ namespace rdb::sql {
 
 Statement::~Statement() = default;
 
-}
+} // namespace rdb::sql

@@ -54,4 +54,4 @@ std::string_view token_kind_to_str(Token::Kind kind);
 
 std::ostream& operator<<(std::ostream& os, const Token& token);
 
-}
+} // namespace rdb::sql

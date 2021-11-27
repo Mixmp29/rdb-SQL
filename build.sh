@@ -7,7 +7,3 @@ readonly release_dir=$scriptdir/build/release
 echo "Building Debug"
 cmake -S $scriptdir -B $debug_dir -DCMAKE_BUILD_TYPE=Debug \
     && cmake --build $debug_dir
-
-echo -e "\nBuilding Release"
-cmake -S $scriptdir -B $release_dir -DCMAKE_BUILD_TYPE=Release \
-    && cmake --build $release_dir

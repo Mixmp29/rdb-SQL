@@ -1,61 +1,46 @@
-set(main_name Sum)
 set(test_name Test)
-set(target_name LibSum)
+set(sql_name rdb)
 
-add_executable(${main_name})
-add_executable(${test_name})
+add_executable(
+    ${test_name}
+    sql/ParserTest.cpp
+)
 
-add_library(${target_name} STATIC)
+add_library(
+  ${sql_name} STATIC
+  sql/Lexer.cpp
+  sql/Lexer.hpp
+  sql/Location.hpp
+  sql/Token.cpp
+  sql/Token.hpp
+  sql/Parser.cpp
+  sql/Parser.hpp
+  sql/Script.hpp
+  sql/Statements.cpp
+  sql/Statements.hpp    
+)
 
 include(CompileOptions)
 
-set_compile_options(${main_name})
 set_compile_options(${test_name})
-set_compile_options(${target_name})
-
-target_sources(
-  ${main_name}
-  PRIVATE
-    Sum/main.cpp
-)
-
-target_sources(
-  ${test_name}
-  PRIVATE
-    LibSum/sum.test.cpp
-)
-
-target_sources(
-  ${target_name}
-  PRIVATE
-    LibSum/sum.hpp
-    LibSum/sum.cpp
-)
+set_compile_options(${sql_name})
 
 target_include_directories(
-  ${target_name}
+  ${sql_name}
   PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}
 )
 
 target_link_libraries(
-  ${target_name}
+  ${sql_name}
   PRIVATE
     m
 )
 
 target_link_libraries(
-  ${main_name}
-  PRIVATE
-    LibSum
-    cxxopts
-)
-
-target_link_libraries(
   ${test_name}
   PRIVATE
-    LibSum
-    gtest
+    rdb
     gtest_main
 )
 

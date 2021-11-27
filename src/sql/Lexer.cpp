@@ -209,4 +209,4 @@ Token Lexer::get_string(){
   return Token(kind, text, begin);
 }
 
-}
+} // namespace rdb::sql

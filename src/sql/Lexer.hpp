@@ -37,4 +37,4 @@ class Lexer {
   std::optional<Token> next_token_;
 };
 
-}
+} // namespace rdb::sql

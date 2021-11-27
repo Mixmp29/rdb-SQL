@@ -27,7 +27,7 @@ class DropTableStatement: public Statement {
 
 using DropTableStatementPtr = std::unique_ptr<const DropTableStatement>;
 
-using Value = std::variant<int, std::string_view>;
+using Value = std::variant<long int, double, std::string_view>;
 
 class InsertStatement: public Statement {
   public:
@@ -53,4 +53,4 @@ class InsertStatement: public Statement {
 
 using InsertStatementPtr = std::unique_ptr<const InsertStatement>;
 
-}
+} // namespace rdb::sql
