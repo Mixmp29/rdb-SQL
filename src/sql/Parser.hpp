@@ -23,6 +23,7 @@ class Parser {
   void panic();
   Token fetch_token(Token::Kind expected_kind);
   StatementPtr parse_sql_statement();
+  CreateTableStatementPtr parse_create_table_statement();
   DropTableStatementPtr parse_drop_table_statement();
   InsertStatementPtr parse_inset_statement();
   Value parse_value();

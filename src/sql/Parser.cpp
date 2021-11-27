@@ -57,6 +57,31 @@ Token Parser::fetch_token(Token::Kind expected_kind) {
   return lexer_.get();
 }
 
+CreateTableStatementPtr Parser::parse_create_table_statement() {
+  fetch_token(Token::Kind::KwCreate);
+  fetch_token(Token::Kind::KwTable);
+  const Token table_name = fetch_token(Token::Kind::Id);
+
+  fetch_token(Token::Kind::LParen);
+
+  std::vector<std::string_view> column_defs;
+  const Token first_column_def = fetch_token(Token::Kind::Id);
+  column_defs.push_back(first_column_def.text());
+
+  while(lexer_.peek().kind() == Token::Kind::Comma){
+    fetch_token(Token::Kind::Comma);
+    const Token next_column_def = fetch_token(Token::Kind::Id);
+    column_defs.push_back(next_column_def.text());
+  }
+
+  fetch_token(Token::Kind::RParen);
+
+  fetch_token(Token::Kind::RParen);
+  fetch_token(Token::Kind::Semi);
+  return std::make_unique<const  CreateTableStatement>(
+         table_name.text(), column_defs);
+}
+
 DropTableStatementPtr Parser::parse_drop_table_statement() {
   fetch_token(Token::Kind::KwDrop);
   fetch_token(Token::Kind::KwTable);
