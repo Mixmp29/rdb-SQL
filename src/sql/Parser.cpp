@@ -138,6 +138,7 @@ Value Parser::parse_value() {
         + std::string(end - token.text().data(), ' ')
         + '^' + std::string(token.text().end() - end - 1, '~') + '\n');    
       }
+      return result;
     } else if (token.kind() == Token::Kind::Real){
 
       result = Value(std::strtof(token.text().data(), &end));
@@ -146,7 +147,7 @@ Value Parser::parse_value() {
         + std::string(end - token.text().data(), ' ')
         + '^' + std::string(token.text().end() - end - 1, '~') + '\n');    
       }
-
+      return result;
     } else {
       assert(token.kind() == Token::Kind::Str);
       return token.text(); 
