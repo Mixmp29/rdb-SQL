@@ -18,21 +18,28 @@ class CreateTableStatement: public Statement {
   public:
     CreateTableStatement(
       std::string_view table_name,
-      const std::vector<std::string_view>& column_defs)
-        : table_name_(table_name), column_defs_(column_defs) {}
+      const std::vector<std::string_view>& column_names)
+        : table_name_(table_name), column_names_(column_names) {}
 
     std::string_view table_name() const { return table_name_; }
 
-    const std::vector<std::string_view>& column_defs() const {
-      return column_defs_;
+    const std::vector<std::string_view>& column_names() const {
+      return column_names_;
     }
 
   private:
     std::string_view table_name_;
-    std::vector<std::string_view> column_defs_;
+    std::vector<std::string_view> column_names_;
 };
 
 using CreateTableStatementPtr = std::unique_ptr<const CreateTableStatement>;
+
+/* class SelectStatement: public Statement {
+  public:
+
+  private:
+
+} */
 
 class DropTableStatement: public Statement {
   public:

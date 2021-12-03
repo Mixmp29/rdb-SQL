@@ -65,13 +65,17 @@ CreateTableStatementPtr Parser::parse_create_table_statement() {
   fetch_token(Token::Kind::LParen);
 
   std::vector<std::string_view> column_defs;
-  const Token first_column_def = fetch_token(Token::Kind::Id);
-  column_defs.push_back(first_column_def.text());
+  const Token first_table_name = fetch_token(Token::Kind::Id);
+  const Token first_column_name = fetch_token(Token::Kind::Id);
+  column_defs.push_back(first_table_name.text());
+  column_defs.push_back(first_column_name.text());
 
   while(lexer_.peek().kind() == Token::Kind::Comma){
     fetch_token(Token::Kind::Comma);
-    const Token next_column_def = fetch_token(Token::Kind::Id);
-    column_defs.push_back(next_column_def.text());
+    const Token next_table_name = fetch_token(Token::Kind::Id);
+    const Token next_column_name = fetch_token(Token::Kind::Id);
+    column_defs.push_back(next_table_name.text());
+    column_defs.push_back(next_column_name.text());
   }
 
   fetch_token(Token::Kind::RParen);
