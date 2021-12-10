@@ -11,43 +11,54 @@
 namespace rdb::sql {
 
 class Token {
- public:
-  enum class Kind {
-    KwCreate,
-    KwInsert,
-    KwTable,
-    KwSelect,
-    KwFrom,
-    KwWhere,
-    KwInto,
-    KwValues,
-    KwDelete,
-    KwDrop,
-    Id,
-    Eof,
-    Unknown,
-    Int,
-    LParen,
-    RParen,
-    Comma,
-    Semi,
-    Lt,
-    Lte,
-    Str,
-    Real
-  };
+public:
+    enum class Kind {
+        KwCreate,
+        KwInsert,
+        KwTable,
+        KwSelect,
+        KwFrom,
+        KwWhere,
+        KwInto,
+        KwValues,
+        KwDelete,
+        KwDrop,
+        Id,
+        Eof,
+        Unknown,
+        Int,
+        LParen,
+        RParen,
+        Comma,
+        Semi,
+        Lt,
+        Lte,
+        Str,
+        Real
+    };
 
-  Token(Kind kind, std::string_view text, Location location)
-      : kind_(kind), text_(text), location_(location) {}
+    Token(Kind kind, std::string_view text, Location location)
+        : kind_(kind), text_(text), location_(location)
+    {
+    }
 
-  Kind kind() const { return kind_; }
-  std::string_view text() const { return text_; }
-  Location location() const { return location_; }
+    Kind kind() const
+    {
+        return kind_;
+    }
+    std::string_view text() const
+    {
+        return text_;
+    }
+    Location location() const
+    {
+        return location_;
+    }
 
- private:
-  Kind kind_;
-  std::string_view text_;
-  Location location_;
+private:
+    Kind kind_;
+    std::string_view text_;
+    Location location_;
 };
 
 std::string_view token_kind_to_str(Token::Kind kind);

@@ -9,32 +9,34 @@
 namespace rdb::sql {
 
 class Lexer {
- public:
-  explicit Lexer(std::string_view input) : input_(input), location_(0, 0, 0) {}
+public:
+    explicit Lexer(std::string_view input) : input_(input), location_(0, 0, 0)
+    {
+    }
 
-  Token get();
+    Token get();
 
-  Token peek();
+    Token peek();
 
-  std::string_view get_line(const Location& location) const;
+    std::string_view get_line(const Location& location) const;
 
- private:
-  Token get_id();
-  Token get_number();
-  Token get_operator();
-  Token get_string();
-  
-  bool eof() const;
-  
-  char peek_char() const;
+private:
+    Token get_id();
+    Token get_number();
+    Token get_operator();
+    Token get_string();
 
-  char get_char();
+    bool eof() const;
 
-  void skip_spaces();
+    char peek_char() const;
 
-  std::string_view input_;
-  Location location_;
-  std::optional<Token> next_token_;
+    char get_char();
+
+    void skip_spaces();
+
+    std::string_view input_;
+    Location location_;
+    std::optional<Token> next_token_;
 };
 
 } // namespace rdb::sql
