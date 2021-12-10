@@ -4,6 +4,7 @@ set(sql_name rdb)
 add_executable(
     ${test_name}
     sql/LexerTest.cpp
+    sql/ParserTest.cpp
 )
 
 add_library(
