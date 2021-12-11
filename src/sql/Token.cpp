@@ -4,7 +4,7 @@
 
 namespace rdb::sql {
 
-static std::string_view kind_to_str(Token::Kind token_kind)
+std::string_view token_kind_to_str(Token::Kind token_kind)
 {
     switch (token_kind) {
     case Token::Kind::KwCreate:
@@ -57,7 +57,7 @@ static std::string_view kind_to_str(Token::Kind token_kind)
 
 std::ostream& operator<<(std::ostream& os, const Token& token)
 {
-    os << kind_to_str(token.kind()) << " '" << token.text() << "' "
+    os << token_kind_to_str(token.kind()) << " '" << token.text() << "' "
        << "Loc=" << token.location().row_ << ":" << token.location().col_;
     return os;
 }
