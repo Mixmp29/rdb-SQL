@@ -91,15 +91,4 @@ std::ostream& operator<<(std::ostream& os, const Operand& operand)
     return os;
 }
 
-/* std::ostream& operator<<(std::ostream& os, Expression::OpType type)
-{
-    if (Expression::OpType Lt = type == Expression::OpType::Lt) {
-        os << Lt;
-    } else if (
-            Expression::OpType Lte = type == Expression::OpType::Lte) {
-        os << Lte;
-    }
-    return os;
-} */
-
 } // namespace rdb::sql
