@@ -11,6 +11,15 @@ namespace rdb::sql {
 class Statement {
 public:
     virtual ~Statement() = 0;
+    virtual std::ostream& print(std::ostream& os) const
+    {
+        return os;
+    };
+    friend std::ostream&
+    operator<<(std::ostream& os, const Statement& statement)
+    {
+        return statement.print(os);
+    }
 };
 
 using StatementPtr = std::unique_ptr<const Statement>;
@@ -19,8 +28,7 @@ using Operand = std::variant<std::string_view, Value>;
 
 class Expression {
 public:
-    enum class OpType { Lt, Lte };
-    Expression(Operand left, OpType operation, Operand right)
+    Expression(Operand left, std::string_view operation, Operand right)
         : left_(left), operation_(operation), right_(right)
     {
     }
@@ -30,7 +38,7 @@ public:
         return left_;
     }
 
-    OpType operation() const
+    std::string_view operation() const
     {
         return operation_;
     }
@@ -40,9 +48,8 @@ public:
         return right_;
     }
 
-private:
     Operand left_;
-    OpType operation_;
+    std::string_view operation_;
     Operand right_;
 };
 
@@ -52,8 +59,8 @@ class CreateTableStatement : public Statement {
 public:
     CreateTableStatement(
             std::string_view table_name,
-            const std::vector<std::string_view>& column_names)
-        : table_name_(table_name), column_names_(column_names)
+            const std::vector<std::string_view>& column_defs)
+        : table_name_(table_name), column_defs_(column_defs)
     {
     }
 
@@ -62,14 +69,16 @@ public:
         return table_name_;
     }
 
-    const std::vector<std::string_view>& column_names() const
+    const std::vector<std::string_view>& column_defs() const
     {
-        return column_names_;
+        return column_defs_;
     }
+
+    std::ostream& print(std::ostream& os) const override;
 
 private:
     std::string_view table_name_;
-    std::vector<std::string_view> column_names_;
+    std::vector<std::string_view> column_defs_;
 };
 
 using CreateTableStatementPtr = std::unique_ptr<const CreateTableStatement>;
@@ -94,10 +103,12 @@ public:
     {
         return column_list_;
     }
-    const std::optional<Expression>& exptression() const
+    const std::optional<Expression>& expression() const
     {
         return expression_;
     }
+
+    std::ostream& print(std::ostream& os) const override;
 
 private:
     std::string_view table_name_;
@@ -119,6 +130,8 @@ public:
         return table_name_;
     }
 
+    std::ostream& print(std::ostream& os) const override;
+
 private:
     std::string_view table_name_;
 };
@@ -135,10 +148,12 @@ public:
     {
         return table_name_;
     }
-    const std::optional<Expression>& exptression() const
+    const std::optional<Expression>& expression() const
     {
         return expression_;
     }
+
+    std::ostream& print(std::ostream& os) const override;
 
 private:
     std::string_view table_name_;
@@ -174,6 +189,8 @@ public:
         return values_;
     }
 
+    std::ostream& print(std::ostream& os) const override;
+
 private:
     std::string_view table_name_;
     std::vector<std::string_view> column_names_;
@@ -181,5 +198,8 @@ private:
 };
 
 using InsertStatementPtr = std::unique_ptr<const InsertStatement>;
+
+std::ostream& operator<<(std::ostream& os, const Value& value);
+std::ostream& operator<<(std::ostream& os, const Operand& operand);
 
 } // namespace rdb::sql

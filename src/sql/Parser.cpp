@@ -84,16 +84,16 @@ void Parser::fetch_type_name()
     }
 }
 
-Expression::OpType Parser::parse_operation()
+std::string_view Parser::parse_operation()
 {
     const Token token = lexer_.peek();
-    Expression::OpType operation;
+    std::string_view operation;
     if (token.kind() == Token::Kind::Lt) {
         fetch_token(Token::Kind::Lt);
-        operation = Expression::OpType::Lt;
+        operation = "Lt";
     } else if (token.kind() == Token::Kind::Lte) {
         fetch_token(Token::Kind::Lte);
-        operation = Expression::OpType::Lte;
+        operation = "Lte";
     } else {
         throw SyntaxError("Expected Lt or Lte");
     }
@@ -270,7 +270,7 @@ Operand Parser::parse_operand()
 Expression Parser::parse_expression()
 {
     Operand left = parse_operand();
-    Expression::OpType operation = parse_operation();
+    std::string_view operation = parse_operation();
     Operand right = parse_operand();
 
     return Expression(left, operation, right);

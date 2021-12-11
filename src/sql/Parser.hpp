@@ -26,7 +26,7 @@ private:
     static void make_error_string(char* end, Token token);
     Token fetch_token(Token::Kind expected_kind);
     void fetch_type_name();
-    Expression::OpType parse_operation();
+    std::string_view parse_operation();
     StatementPtr parse_sql_statement();
     CreateTableStatementPtr parse_create_table_statement();
     SelectStatementPtr parse_select_statement();
