@@ -1,13 +1,6 @@
 #!/bin/bash
 
-readonly scriptdir="$(dirname "$(readlink -f "$0")")"
-readonly debug_dir=$scriptdir/build/debug
-readonly release_dir=$scriptdir/build/release
-
-echo "Building Debug"
-cmake -S $scriptdir -B $debug_dir -DCMAKE_BUILD_TYPE=Debug \
-    && cmake --build $debug_dir
-
-echo -e "\nBuilding Release"
-cmake -S $scriptdir -B $release_dir -DCMAKE_BUILD_TYPE=Release \
-    && cmake --build $release_dir
+echo -e "\nBuilding Debug"
+cmake -S . -B build/debug -DCMAKE_BUILD_TYPE=Debug &&
+cmake --build build/debug && 
+ctest --test-dir build/debug/src

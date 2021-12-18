@@ -5,12 +5,6 @@ function(set_compile_options target_name)
     target_compile_options(${target_name} PRIVATE -Wall -Wextra -Werror -pedantic)
   endif()
 
-  target_include_directories(
-    ${target_name}
-    PUBLIC
-      ${PROJECT_SOURCE_DIR}/src/LibSum
-  )
-
   set_target_properties(
     ${target_name}
     PROPERTIES
