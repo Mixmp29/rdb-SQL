@@ -26,7 +26,13 @@ std::string_view token_kind_to_str(Token::Kind token_kind)
     case Token::Kind::KwDelete:
         return "KwDelete";
     case Token::Kind::KwDrop:
-        return "KdDrop";
+        return "KwDrop";
+    case Token::Kind::KwTEXT:
+        return "KwTEXT";
+    case Token::Kind::KwINT:
+        return "KwINT";
+    case Token::Kind::KwREAL:
+        return "KwDrop";
     case Token::Kind::Eof:
         return "Eof";
     case Token::Kind::Id:

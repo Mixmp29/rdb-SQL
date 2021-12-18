@@ -147,7 +147,7 @@ TEST(LexerSuite, KeyWordTest)
               "KwValues 'VALUES' Loc=0:45\n"
               "KwDelete 'DELETE' Loc=0:52\n"
               "KwFrom 'FROM' Loc=0:59\n"
-              "KdDrop 'DROP' Loc=0:64\n"
+              "KwDrop 'DROP' Loc=0:64\n"
               "Eof '<EOF>' Loc=0:68\n";
     EXPECT_EQ(expected_tokens, tokens);
 }

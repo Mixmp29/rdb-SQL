@@ -25,14 +25,14 @@ private:
     void panic();
     static void make_error_string(char* end, Token token);
     Token fetch_token(Token::Kind expected_kind);
-    void fetch_type_name();
+    Token fetch_type_name();
     std::string_view parse_operation();
     StatementPtr parse_sql_statement();
     CreateTableStatementPtr parse_create_table_statement();
     SelectStatementPtr parse_select_statement();
     DeleteStatementPtr parse_delete_statement();
     DropTableStatementPtr parse_drop_table_statement();
-    InsertStatementPtr parse_inset_statement();
+    InsertStatementPtr parse_insert_statement();
     Value parse_value();
     Operand parse_operand();
     Expression parse_expression();

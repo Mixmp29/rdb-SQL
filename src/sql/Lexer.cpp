@@ -126,7 +126,10 @@ Token Lexer::get_id()
                {"INTO", Token::Kind::KwInto},
                {"VALUES", Token::Kind::KwValues},
                {"DELETE", Token::Kind::KwDelete},
-               {"DROP", Token::Kind::KwDrop}};
+               {"DROP", Token::Kind::KwDrop},
+               {"INT", Token::Kind::KwINT},
+               {"REAL", Token::Kind::KwREAL},
+               {"TEXT", Token::Kind::KwTEXT}};
 
     const auto it = text_to_kind.find(text);
     if (it != text_to_kind.end()) {

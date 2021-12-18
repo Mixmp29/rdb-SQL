@@ -50,11 +50,20 @@ void Parser::make_error_string(char* end, Token token)
 StatementPtr Parser::parse_sql_statement()
 {
     const Token token = lexer_.peek();
-    if (token.kind() == Token::Kind::KwInsert) {
-        return parse_inset_statement();
+    if (token.kind() == Token::Kind::KwCreate) {
+        return parse_create_table_statement();
+    }
+    if (token.kind() == Token::Kind::KwSelect) {
+        return parse_select_statement();
+    }
+    if (token.kind() == Token::Kind::KwDelete) {
+        return parse_delete_statement();
     }
     if (token.kind() == Token::Kind::KwDrop) {
         return parse_drop_table_statement();
+    }
+    if (token.kind() == Token::Kind::KwInsert) {
+        return parse_insert_statement();
     }
     throw SyntaxError("Expected Drop or Insert");
 }
@@ -70,18 +79,19 @@ Token Parser::fetch_token(Token::Kind expected_kind)
     return lexer_.get();
 }
 
-void Parser::fetch_type_name()
+Token Parser::fetch_type_name()
 {
     const Token token = lexer_.peek();
-    if (token.kind() == Token::Kind::Int) {
-        fetch_token(Token::Kind::Int);
+    if (token.kind() == Token::Kind::KwINT) {
+        return fetch_token(Token::Kind::KwINT);
     }
-    if (token.kind() == Token::Kind::Real) {
-        fetch_token(Token::Kind::Real);
+    if (token.kind() == Token::Kind::KwREAL) {
+        return fetch_token(Token::Kind::KwREAL);
     }
-    if (token.kind() == Token::Kind::Str) {
-        fetch_token(Token::Kind::Str);
+    if (token.kind() == Token::Kind::KwTEXT) {
+        return fetch_token(Token::Kind::KwTEXT);
     }
+    throw SyntaxError("Expected KwINT, KwREAL or KwTEXT");
 }
 
 std::string_view Parser::parse_operation()
@@ -111,19 +121,21 @@ CreateTableStatementPtr Parser::parse_create_table_statement()
 
     std::vector<std::string_view> column_defs;
     const Token first_column_name = fetch_token(Token::Kind::Id);
-    fetch_type_name();
+    const Token first_type_name = fetch_type_name();
+    ;
     column_defs.push_back(first_column_name.text());
+    column_defs.push_back(first_type_name.text());
 
     while (lexer_.peek().kind() == Token::Kind::Comma) {
         fetch_token(Token::Kind::Comma);
         const Token next_column_name = fetch_token(Token::Kind::Id);
-        fetch_type_name();
+        const Token next_type_name = fetch_type_name();
         column_defs.push_back(next_column_name.text());
+        column_defs.push_back(next_type_name.text());
     }
 
     fetch_token(Token::Kind::RParen);
 
-    fetch_token(Token::Kind::RParen);
     fetch_token(Token::Kind::Semi);
     return std::make_unique<const CreateTableStatement>(
             table_name.text(), column_defs);
@@ -187,7 +199,7 @@ DropTableStatementPtr Parser::parse_drop_table_statement()
     return std::make_unique<const DropTableStatement>(table_name.text());
 }
 
-InsertStatementPtr Parser::parse_inset_statement()
+InsertStatementPtr Parser::parse_insert_statement()
 {
     fetch_token(Token::Kind::KwInsert);
     fetch_token(Token::Kind::KwInto);
@@ -232,6 +244,7 @@ Value Parser::parse_value()
     Value result;
     const Token token = lexer_.peek();
     if (token.kind() == Token::Kind::Int) {
+        fetch_token(Token::Kind::Int);
         result = Value(std::strtol(token.text().data(), &end, base));
         if (token.text().data() + token.text().size() != end) {
             make_error_string(end, token);
@@ -239,6 +252,7 @@ Value Parser::parse_value()
         return result;
     }
     if (token.kind() == Token::Kind::Real) {
+        fetch_token(Token::Kind::Real);
         result = Value(std::strtof(token.text().data(), &end));
         if (token.text().data() + token.text().size() != end) {
             make_error_string(end, token);
@@ -246,6 +260,7 @@ Value Parser::parse_value()
         return result;
     }
     if (token.kind() == Token::Kind::Str) {
+        fetch_token(Token::Kind::Str);
         assert(token.kind() == Token::Kind::Str);
         return token.text();
     }

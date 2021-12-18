@@ -8,60 +8,54 @@ Statement::~Statement() = default;
 
 std::ostream& CreateTableStatement::print(std::ostream& os) const
 {
-    os << "CreateTableStatement: Table - " << table_name() << "; ColumnDefs -";
-    for (const auto& i : column_defs()) {
-        os << " " << i;
+    os << "CreateTableStatement: TABLE - " << table_name() << "; ColumnDefs -";
+    for (const auto& ColumnDefs : column_defs()) {
+        os << " " << ColumnDefs;
     }
-    os << "\n";
     return os;
 }
 
 std::ostream& SelectStatement::print(std::ostream& os) const
 {
-    os << "SelectStatement: Table - " << table_name() << "; ColumnList -";
-    for (const auto& i : column_list()) {
-        os << " " << i;
+    os << "SelectStatement: TABLE - " << table_name() << "; ColumnList -";
+    for (const auto& ColumnList : column_list()) {
+        os << " " << ColumnList;
     }
     if (!expression().has_value()) {
-        os << "\n";
         return os;
     }
     os << "; Expression - " << expression().value().left_ << " "
        << expression().value().operation_ << " " << expression().value().right_;
-    os << "\n";
     return os;
 }
 
 std::ostream& DropTableStatement::print(std::ostream& os) const
 {
-    os << "DropTableStatement: Table - " << table_name() << "\n";
+    os << "DropTableStatement: TABLE - " << table_name();
     return os;
 }
 
 std::ostream& DeleteStatement::print(std::ostream& os) const
 {
-    os << "DeleteStatement: Table - " << table_name();
+    os << "DeleteStatement: TABLE - " << table_name();
     if (!expression().has_value()) {
-        os << "\n";
         return os;
     }
     os << "; Expression - " << expression().value().left_ << " "
        << expression().value().operation_ << " " << expression().value().right_;
-    os << "\n";
     return os;
 }
 
 std::ostream& InsertStatement::print(std::ostream& os) const
 {
-    os << "InsertStatement: Table - " << table_name() << "; Column Names -";
-    for (const auto& i : column_names()) {
-        os << " " << i;
+    os << "InsertStatement: TABLE - " << table_name() << "; Column Names -";
+    for (const auto& ColumnNames : column_names()) {
+        os << " " << ColumnNames;
     }
     os << "; Values -";
-    for (const auto& i : values()) {
-        os << " " << i;
+    for (const auto& Values : values()) {
+        os << " " << Values;
     }
-    os << "\n";
     return os;
 }
 
